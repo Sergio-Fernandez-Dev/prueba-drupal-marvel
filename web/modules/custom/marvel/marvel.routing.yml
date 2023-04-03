@@ -1,0 +1,15 @@
+marvel.list.comics:
+  path: '/marvel/list/comics'
+  defaults:
+    _controller: '\Drupal\school\Controller\DrupalController::showComics' 
+    _title: 'Comics'
+  requirements:
+    _permission: 'access content'
+
+marvel.list.superheroes:
+  path: '/marvel/list/superheroes'
+  defaults:
+    _controller: '\Drupal\school\Controller\DrupalController::showSuperheroes' 
+    _title: 'Superheroes'
+  requirements:
+    _permission: 'access content'
