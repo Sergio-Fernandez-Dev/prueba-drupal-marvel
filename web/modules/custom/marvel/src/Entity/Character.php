@@ -56,6 +56,13 @@ class Character extends ContentEntityBase implements CharacterInterface
             ->setLabel(t('Created'))
             ->setDescription(t('The time that the entity was created.'));
 
+        $fields['users'] = BaseFieldDefinition::create('entity_reference')
+            ->setLabel(t('Users'))
+            ->setDescription(t('The users who have favorited this comic.'))
+            ->setSetting('target_type', 'user')
+            ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
+            ->setDefaultValue([]);
+
         return $fields;
     }
 }
