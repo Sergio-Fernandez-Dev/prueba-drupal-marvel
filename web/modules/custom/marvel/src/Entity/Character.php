@@ -28,7 +28,7 @@ class Character extends ContentEntityBase implements CharacterInterface
         $fields = parent::baseFieldDefinitions($entity_type); 
 
         $fields['name'] = BaseFieldDefinition::create('string')
-            ->setLabel(t('Character Name'))
+            ->setLabel(t('Character name'))
             ->setDescription(t('The name of the character'))
             ->setRequired(true)
             ->setSetting('max_length', 50);
@@ -41,13 +41,13 @@ class Character extends ContentEntityBase implements CharacterInterface
             ->setSetting('max_length', 255);
 
         $fields['thumbnail_path'] = BaseFieldDefinition::create('string')
-            ->setLabel(t('Character Picture'))
+            ->setLabel(t('Picture'))
             ->setDescription(t('The picture of the character'))
             ->setRequired(true)
             ->setSetting('max_length', 255);
         
         $fields['thumbnail_extension'] = BaseFieldDefinition::create('string')
-            ->setLabel(t('Character Picture Extension'))
+            ->setLabel(t('Picture extension'))
             ->setDescription(t("The extension of character's picture"))
             ->setRequired(true)
             ->setSetting('max_length', 4);
