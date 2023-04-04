@@ -1,3 +1,11 @@
+marvel.api.config.form:
+path: 'admin/api/config'
+  defaults:
+    _form:  'Drupal\marvel\Form\APIConfigForm'
+    _title: 'API Configuration'
+  requirements:
+    _permission: 'access content'
+
 marvel.list.comics:
   path: '/marvel/list/comics'
   defaults:
@@ -6,10 +14,19 @@ marvel.list.comics:
   requirements:
     _permission: 'access content'
 
-marvel.list.superheroes:
-  path: '/marvel/list/superheroes'
+marvel.list.characters:
+  path: '/marvel/list/characters'
   defaults:
-    _controller: '\Drupal\school\Controller\DrupalController::showSuperheroes' 
-    _title: 'Superheroes'
+    _controller: '\Drupal\school\Controller\DrupalController::showCharacters' 
+    _title: 'Characters'
   requirements:
     _permission: 'access content'
+
+marvel.list.favorites:
+  path: '/marvel/list/favorites'
+  defaults:
+  _controller: '\Drupal\school\Controller\DrupalController::showFavorites'
+  _title: 'Favorites'
+  requirements:
+  _permission: 'access content'
+
