@@ -7,7 +7,7 @@ marvel.api.config.form:
     _permission: 'access content'
 
 marvel.list.comics:
-  path: '/marvel/favorites/{user}/comics'
+  path: '/marvel/favorites/comics'
   methods: 'GET'
   defaults:
     _controller: '\Drupal\marvel\Controller\ComicController::index' 
@@ -25,7 +25,7 @@ marvel.store.comics:
     _permission: 'access content'
 
 marvel.list.characters:
-  path: '/marvel/favorites/{user}/characters'
+  path: '/marvel/favorites/characters'
   methods: 'GET'
   defaults:
     _controller: '\Drupal\marvel\Controller\CharacterController::index' 
@@ -37,8 +37,7 @@ marvel.store.characters:
   path: '/marvel/favorites/characters'
   methods: 'POST'
   defaults:
-    _controller: '\Drupal\marvel\Controller\CharacterController::index' 
+    _controller: '\Drupal\marvel\Controller\CharacterController::store' 
     _title: 'Characters'
   requirements:
     _permission: 'access content'
-
