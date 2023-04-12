@@ -13,11 +13,10 @@ use Drupal\marvel\ComicInterface;
  * 
  * @ContentEntityType(
  *      id = "marvel_comic",
- *      base_table = "comics",
+ *      base_table = "marvel_comics",
  *      entity_keys = {
  *          "id" = "id",
  *          "uuid" = "uuid",
- *          "label" = "label",
  *      }
  * )
  */
@@ -28,42 +27,11 @@ class Comic extends ContentEntityBase implements ComicInterface
     {
         $fields = parent::baseFieldDefinitions($entity_type); 
 
-        $fields['title'] = BaseFieldDefinition::create('string')
-            ->setLabel(t('Title'))
-            ->setDescription(t('The title of the comic.'))
-            ->setRequired(true)
-            ->setSetting('max_length', 75);
-
-        $fields['description'] = BaseFieldDefinition::create('string')
-            ->setLabel(t('Description'))
-            ->setDescription(t('The resume of the comic'))
-            ->setRequired(true)
-            ->setDefaultValue('Not available description')
-            ->setSetting('max_length', 255);
-
-        $fields['num_of_pages'] = BaseFieldDefinition::create('integer')
-            ->setLabel(t('Number of pages'))
-            ->setDescription(t('The number of pages in the comic'))
-            ->setRequired(true)
-            ->setDefaultValue(0);
-
-
-        $fields['thumbnail_path'] = BaseFieldDefinition::create('string')
-            ->setLabel(t('Front page'))
-            ->setDescription(t('The front page of the comic.'))
-            ->setRequired(true)
-            ->setSetting('max_length', 255);
+        $fields['comic_id'] = BaseFieldDefinition::create('integer')
+        ->setLabel(t('Comic Id'))
+        ->setDescription(t('The Id of the comic'))
+        ->setRequired(true);
         
-        $fields['thumbnail_extension'] = BaseFieldDefinition::create('string')
-            ->setLabel(t('Picture extension'))
-            ->setDescription(t("The extension of comic's picture"))
-            ->setRequired(true)
-            ->setSetting('max_length', 4);
-
-        $fields['created'] = BaseFieldDefinition::create('created')
-            ->setLabel(t('Created'))
-            ->setDescription(t('The time that the entity was created.'));
-
         $fields['users'] = BaseFieldDefinition::create('entity_reference')
             ->setLabel(t('Users'))
             ->setDescription(t('The users who have favorited this comic.'))
