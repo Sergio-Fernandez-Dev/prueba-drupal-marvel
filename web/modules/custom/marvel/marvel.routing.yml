@@ -41,3 +41,12 @@ marvel.store.characters:
     _title: 'Characters'
   requirements:
     _permission: 'access content'
+
+marvel.delete.characters:
+  path: '/marvel/favorites/characters/{id}'
+  methods: 'DELETE'
+  defaults:
+    _controller: '\Drupal\marvel\Controller\CharacterController::delete' 
+    _title: 'Characters'
+  requirements:
+    _permission: 'access content'
