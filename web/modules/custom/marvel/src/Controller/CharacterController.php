@@ -31,15 +31,11 @@ class CharacterController extends ControllerBase
         echo 'Character Controller';
     }
 
-    /**
-   * @param Request $request
-   * @return \Symfony\Component\HttpFoundation\JsonResponse
-   */
     public function store(Request $request)
     {               
         $data = json_decode($request->getContent(), true);
-        $user = \Drupal\user\Entity\User::load(1);
-        $character = Character::load($data['id']);
+        $user = $this->entityTypeManager()->getStorage('user')->load($this->currentUser()->id());
+        $character = $this->entityTypeManager()->getStorage('marvel_character')->load($data['id']);
         
         if (!$character) {
             $character = Character::create([
@@ -57,5 +53,9 @@ class CharacterController extends ControllerBase
         $character->save();
 
         return new JsonResponse(Response::HTTP_OK);
+    }
+
+    public function delete($id) {
+
     }
 }
