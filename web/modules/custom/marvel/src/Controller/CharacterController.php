@@ -56,6 +56,21 @@ class CharacterController extends ControllerBase
     }
 
     public function delete($id) {
+ 
+        $user = $this->entityTypeManager()->getStorage('user')->load($this->currentUser()->id());
+        $character = $this->entityTypeManager()->getStorage('marvel_character')->load($id);
 
+        $existingUsers = $character->get('users')->referencedEntities();
+        
+        if ($index = array_search($user, $existingUsers)) {
+            $character->get('users')->removeItem($index);
+            $character->save();
+        }
+
+        if (empty($character->get('users'))) {
+            $character->delete();
+        }
+
+        return new JsonResponse(Response::HTTP_OK);
     }
 }
