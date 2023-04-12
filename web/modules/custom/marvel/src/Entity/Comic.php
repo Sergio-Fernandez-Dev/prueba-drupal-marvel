@@ -15,7 +15,7 @@ use Drupal\marvel\ComicInterface;
  *      id = "marvel_comic",
  *      base_table = "marvel_comics",
  *      entity_keys = {
- *          "id" = "id",
+ *          "id" = "comic_id",
  *          "uuid" = "uuid",
  *      }
  * )
@@ -30,7 +30,8 @@ class Comic extends ContentEntityBase implements ComicInterface
         $fields['comic_id'] = BaseFieldDefinition::create('integer')
         ->setLabel(t('Comic Id'))
         ->setDescription(t('The Id of the comic'))
-        ->setRequired(true);
+        ->setRequired(true)
+        ->addConstraint('UniqueField', []);
         
         $fields['users'] = BaseFieldDefinition::create('entity_reference')
             ->setLabel(t('Users'))
