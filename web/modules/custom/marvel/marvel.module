@@ -1,3 +1,28 @@
-<?php 
+<?php
 
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
+/**
+ * Implements hook_permission().
+ */
+function marvel_permission()
+{
+    return [
+        'marvel.delete_character' => [
+            'title' => t('Delete character'),
+            'description' => t('Allows users to delete characters.'),
+        ],
+    ];
+}
+
+/**
+ * Implements hook_install().
+ */
+function marvel_install() 
+{
+    $role = user_role_load_by_name('authenticated');
+
+    if ($role) {
+        user_role_grant_permissions($role->id(), ['marvel.delete_character']);
+    }
+}
