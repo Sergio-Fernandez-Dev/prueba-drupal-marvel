@@ -7,9 +7,25 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Drupal\marvel\Entity\Character;
 use Symfony\Component\HttpFoundation\Response;
+use Drupal\Core\Database\Connection;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CharacterController extends ControllerBase
 {
+
+    protected $connection;
+
+    public function __construct(Connection $connection) 
+    {
+        $this->connection = $connection;
+    }
+
+    public static function create(ContainerInterface $container) 
+    {
+        return new static(
+            $container->get('database'),
+        );
+    }
     public function index()
     {
         echo 'Character Controller';
@@ -22,12 +38,21 @@ class CharacterController extends ControllerBase
     public function store(Request $request)
     {               
         $data = json_decode($request->getContent(), true);
-        $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
+        $user = \Drupal\user\Entity\User::load(1);
+        $character = Character::load($data['id']);
+        
+        if (!$character) {
+            $character = Character::create([
+                'character_id' => $data['id'],
+                'users' => $user,
+            ]);
+        }
+        
+        $existingUsers = $character->get('users')->referencedEntities();
 
-        $character = Character::create([
-            'character_id' => $data['id'],          
-            'users' => $user,
-        ]);
+        if (!in_array($user, $existingUsers)) {
+            $character->get('users')->appendItem($user);
+        }                  
 
         $character->save();
 
