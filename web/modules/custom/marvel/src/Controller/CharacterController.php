@@ -28,7 +28,11 @@ class CharacterController extends ControllerBase
     }
     public function index()
     {
-        echo 'Character Controller';
+        $user = $this->entityTypeManager()->getStorage('user')->load($this->currentUser()->id());
+        $characterList = $this->entityTypeManager()->getStorage('marvel_character')->loadByProperties(['users' => [$user->id()]]);
+        $result = array_keys($characterList);
+
+        return new JsonResponse($result);
     }
 
     public function store(Request $request)
