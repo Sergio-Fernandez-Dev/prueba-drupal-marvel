@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @file
+ * Contains \Drupal\marvel\Controller\CharacterController.
+ */
+
+
 namespace Drupal\marvel\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
@@ -8,8 +14,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Drupal\marvel\Entity\Character;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Controller class for managing Marvel characters.
+ */
 class CharacterController extends ControllerBase
 {
+    /**
+   * Returns a JSON response with the list of characters associated with the current user.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   The JSON response containing the list of character IDs.
+   */
     public function index()
     {
         $user = $this->entityTypeManager()->getStorage('user')->load($this->currentUser()->id());
@@ -19,6 +34,15 @@ class CharacterController extends ControllerBase
         return new JsonResponse($result);
     }
 
+    /**
+   * Stores a Marvel character associated with the current user.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   The HTTP request object.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   The JSON response indicating the success of the operation.
+   */
     public function store(Request $request)
     {
         $data = json_decode($request->getContent(), true);
@@ -43,6 +67,15 @@ class CharacterController extends ControllerBase
         return new JsonResponse(Response::HTTP_OK);
     }
 
+    /**
+   * Deletes a Marvel character associated with the current user.
+   *
+   * @param int $id
+   *   The ID of the character to be deleted.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   The JSON response indicating the success of the operation.
+   */
     public function delete($id)
     {
         $user = $this->entityTypeManager()->getStorage('user')->load($this->currentUser()->id());
