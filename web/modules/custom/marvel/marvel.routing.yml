@@ -24,6 +24,15 @@ marvel.store.comics:
   requirements:
     _permission: 'access content'
 
+marvel.delete.comics:
+  path: '/marvel/favorites/comics/{id}'
+  methods: 'DELETE'
+  defaults:
+    _controller: '\Drupal\marvel\Controller\ComicController::delete' 
+    _title: 'Comics'
+  requirements:
+    _permission: 'delete marvel content'
+
 marvel.list.characters:
   path: '/marvel/favorites/characters'
   methods: 'GET'
@@ -49,4 +58,4 @@ marvel.delete.characters:
     _controller: '\Drupal\marvel\Controller\CharacterController::delete' 
     _title: 'Characters'
   requirements:
-    _permission: 'access content'
+    _permission: 'delete marvel content'

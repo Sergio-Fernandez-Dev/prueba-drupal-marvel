@@ -1,0 +1,4 @@
+delete marvel content:
+  title: 'Delete marvel content'
+  description: 'Allows users to delete marvel content.'
+  restrict access: true
