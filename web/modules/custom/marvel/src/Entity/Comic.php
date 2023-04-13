@@ -1,5 +1,9 @@
 <?php 
 
+/**
+ * @file
+ * Contains \Drupal\marvel\Entity\Comic.
+ */
 namespace Drupal\marvel\Entity;
 
 use Drupal\Core\Entity\ContentEntityBase;

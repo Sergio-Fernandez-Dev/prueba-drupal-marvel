@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @file
+ * Contains \Drupal\marvel\Entity\Character.
+ */
 namespace Drupal\marvel\Entity;
 
 use Drupal\Core\Entity\ContentEntityBase;
@@ -7,6 +11,7 @@ use \Drupal\Core\Entity\Annotation\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use \Drupal\marvel\CharacterInterface;
+
 /**
  * Defines a character entity type.
  * 
