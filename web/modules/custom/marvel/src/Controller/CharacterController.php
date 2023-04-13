@@ -83,7 +83,9 @@ class CharacterController extends ControllerBase
 
         $existingUsers = $character->get('users')->referencedEntities();
 
-        if ($index = array_search($user, $existingUsers)) {
+        $index = array_search($user, $existingUsers);
+
+        if (isset($index)) {
             $character->get('users')->removeItem($index);
             $character->save();
         }
