@@ -34,11 +34,20 @@ marvel.delete.comics:
     _permission: 'delete marvel content'
 
 marvel.list.characters:
+  path: '/marvel/characters'
+  methods: 'GET'
+  defaults:
+    _controller: '\Drupal\marvel\Controller\CharacterController::getAll' 
+    _title: 'Characters'
+  requirements:
+    _permission: 'access content'
+
+marvel.list.favorites.characters:
   path: '/marvel/favorites/characters'
   methods: 'GET'
   defaults:
-    _controller: '\Drupal\marvel\Controller\CharacterController::index' 
-    _title: 'Characters'
+    _controller: '\Drupal\marvel\Controller\CharacterController::getAllFavorites' 
+    _title: 'Favorite Characters'
   requirements:
     _permission: 'access content'
 

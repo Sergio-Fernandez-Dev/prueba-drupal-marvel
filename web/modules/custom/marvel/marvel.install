@@ -1,0 +1,21 @@
+<?php
+use Drupal\menu_link_content\Entity\MenuLinkContent;
+
+
+/**
+ * Implements hook_install().
+ */
+function marvel_install()
+{
+    $role = \Drupal\user\Entity\Role::load('authenticated');
+
+    if ($role) {
+        $permissions = \Drupal::config('marvel.permissions')->get();
+
+        if (!empty($permissions)) {
+            $role->grantPermissions(array_keys($permissions));
+            $role->save();
+        }
+    }
+
+}

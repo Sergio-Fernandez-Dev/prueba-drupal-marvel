@@ -1,0 +1,13 @@
+marvel.main_link:
+  title: 'Marvel'
+  menu_name: main
+  description: 'List of Marvel items'
+  route_name: marvel.list.characters
+  weight: 10
+
+marvel.favorites_link:
+  title: 'Favorites'
+  menu_name: main
+  description: 'List of favorite Marvel items'
+  route_name: marvel.list.favorites.characters
+  weight: 10

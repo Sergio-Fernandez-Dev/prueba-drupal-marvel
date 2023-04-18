@@ -2,5 +2,5 @@ name: Marvel
 description: "Marvel API Management"
 type: module
 core_version_requirement: '^9 || ^10'
-package: Custom
+package: Custom 
 version: '1.0.0'

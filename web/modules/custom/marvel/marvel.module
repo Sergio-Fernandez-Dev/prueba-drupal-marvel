@@ -1,22 +1,15 @@
 <?php
 
-
 /**
- * Implements hook_install().
+ * Implements hook_theme()
  */
-function custom_module_install()
+function marvel_theme($existing, $type, $theme, $path)
 {
-    $role = \Drupal\user\Entity\Role::load('authenticated');
-
-    if ($role) {
-
-        $permissions = \Drupal::config('marvel.permissions')->get();
-
-        if (!empty($permissions)) {
-            $role->grantPermissions(array_keys($permissions));
-            $role->save();
-        }
-    }
-
-    \Drupal::service('user.permissions')->reset();
+    return [
+        'marvel-item-list' => [
+            'variables' => [
+                'data' => NULL
+            ],
+        ],
+    ];
 }

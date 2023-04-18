@@ -37,6 +37,21 @@ class Character extends ContentEntityBase implements CharacterInterface
             ->setRequired(true)
             ->addConstraint('UniqueField', []);
 
+        $fields['name'] = BaseFieldDefinition::create('string')
+            ->setLabel(t('Character Name'))
+            ->setDescription(t('The name of the character'))
+            ->setRequired(true);
+
+        $fields['description'] = BaseFieldDefinition::create('string')
+            ->setLabel(t('Character Description'))
+            ->setDescription(t('The description of the character'))
+            ->setRequired(true);
+        
+        $fields['image'] = BaseFieldDefinition::create('string')
+            ->setLabel(t('Character Image'))
+            ->setDescription(t('The URL of the characters image'))
+            ->setRequired(true);
+
         $fields['users'] = BaseFieldDefinition::create('entity_reference')
             ->setLabel(t('Users'))
             ->setDescription(t('The users who have favorited this character.'))
