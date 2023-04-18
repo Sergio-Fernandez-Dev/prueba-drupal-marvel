@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 class CharacterController extends ControllerBase
 {
     /*
-     * Displays My Custom View.
+     * Displays Marvel View.
      *
      * @return array
      *   The render array for the view output.
@@ -46,12 +46,14 @@ class CharacterController extends ControllerBase
         $data['category'] = 'characters';
         $data['response'] = $result;
         $data['favorites'] = $favorites;
+        $data['favorites']['endpoint'] = 'marvel/favorites/characters';
 
         return [
             '#theme' => 'marvel-item-list',
             '#data' => $data,
         ];
     }
+
     /**
      * Returns a JSON response with the list of characters associated with the current user.
      *
@@ -61,9 +63,8 @@ class CharacterController extends ControllerBase
     {
         $user = $this->entityTypeManager()->getStorage('user')->load($this->currentUser()->id());
         $characterList = $this->entityTypeManager()->getStorage('marvel_character')->loadByProperties(['users' => [$user->id()]]);
-        $result = $characterList;
 
-        return $result;
+        return $characterList;
     }
 
     /**

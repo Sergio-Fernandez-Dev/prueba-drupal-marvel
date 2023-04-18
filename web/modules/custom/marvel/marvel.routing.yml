@@ -7,10 +7,19 @@ marvel.api.config.form:
     _permission: 'access content'
 
 marvel.list.comics:
-  path: '/marvel/favorites/comics'
+  path: '/marvel/comics'
   methods: 'GET'
   defaults:
-    _controller: '\Drupal\marvel\Controller\ComicController::index' 
+    _controller: '\Drupal\marvel\Controller\ComicController::getAll' 
+    _title: 'Comics'
+  requirements:
+    _permission: 'access content'
+
+marvel.list.favorite.comics:
+  path: '/marvel/favorite/comics'
+  methods: 'GET'
+  defaults:
+    _controller: '\Drupal\marvel\Controller\ComicController::getAllfavorites' 
     _title: 'Comics'
   requirements:
     _permission: 'access content'
