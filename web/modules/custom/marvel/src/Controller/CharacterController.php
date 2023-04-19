@@ -9,10 +9,12 @@
 namespace Drupal\marvel\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Render\Renderer;
+use Drupal\marvel\Entity\Character;
 use GuzzleHttp\Client;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Drupal\marvel\Entity\Character;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -36,7 +38,7 @@ class CharacterController extends ControllerBase
             $response = $client->get($url);
             $body = $response->getBody();
             $result = json_decode($body, true);       
-            $favorites = $this->getAllFavorites();
+            $favorites = $this->getFavoritesIds();
             
         } catch (\Exception $e) {
             echo $e->getMessage();
@@ -49,8 +51,9 @@ class CharacterController extends ControllerBase
         $data['favorites']['endpoint'] = 'marvel/favorites/characters';
 
         return [
-            '#theme' => 'marvel-item-list',
+            '#theme' => 'marvel-items-list',
             '#data' => $data,
+  
         ];
     }
 
@@ -59,12 +62,40 @@ class CharacterController extends ControllerBase
      *
      * 
      */
-    public function getAllFavorites()
+    public function getFavoritesIds()
     {
         $user = $this->entityTypeManager()->getStorage('user')->load($this->currentUser()->id());
         $characterList = $this->entityTypeManager()->getStorage('marvel_character')->loadByProperties(['users' => [$user->id()]]);
 
         return $characterList;
+    }
+
+    public function getAllFavorites()
+    {
+        $url = 'https://gateway.marvel.com/v1/public/characters?ts=1&apikey=e8960442b278be0f6285586922d9e4e4&hash=a31a5f679419eb7125fa9c0fc3462def';
+        $client = new Client();
+
+        try {
+            
+            $response = $client->get($url);
+            $body = $response->getBody();
+            $result = json_decode($body, true);       
+            $favorites = $this->getFavoritesIds();
+            
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
+
+        $data = [];
+        $data['category'] = 'characters';
+        $data['response'] = $result;
+        $data['favorites'] = $favorites;
+        $data['favorites']['endpoint'] = 'marvel/favorites/characters';
+
+        return [
+            '#theme' => 'marvel-favorites-list',
+            '#data' => $data,
+        ];
     }
 
     /**

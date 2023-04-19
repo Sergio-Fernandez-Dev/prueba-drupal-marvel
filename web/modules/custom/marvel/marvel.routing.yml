@@ -16,7 +16,7 @@ marvel.list.comics:
     _permission: 'access content'
 
 marvel.list.favorite.comics:
-  path: '/marvel/favorite/comics'
+  path: '/marvel/favorites/comics'
   methods: 'GET'
   defaults:
     _controller: '\Drupal\marvel\Controller\ComicController::getAllfavorites' 

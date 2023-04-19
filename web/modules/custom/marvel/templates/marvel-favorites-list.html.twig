@@ -1,0 +1,31 @@
+<nav> 
+    <a href="https://prueba-drupal-marvel.ddev.site/marvel/favorites/characters">Personajes</a>
+    <a href="https://prueba-drupal-marvel.ddev.site/marvel/favorites/comics">Comics</a>
+</nav>
+
+{% if data.category == 'characters' %}
+    {% for item in data.response.data.results %}
+        {% if item.id in data.favorites|keys == true %}
+            <div>
+                <img src="{{ item.thumbnail.path }}.{{ item.thumbnail.extension }}">
+                <h3>{{ item.name }}</h3>
+                <p>Descripción: {{ item.description }}</p>
+                <button onclick="removeFromFavorites({{ item.id }}, '{{ data.favorites.endpoint }}')">Borrar de favoritos</button>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% else %}
+    {% for item in data.response.data.results %}
+        {% if item.id in data.favorites|keys == true %}    
+            <div>
+                <img src="{{ item.thumbnail.path }}.{{ item.thumbnail.extension }}">
+                <h3>{{ item.title }}</h3>
+                <p>Descripción: {{ item.description }}</p>
+                <p>Número de páginas: {{ item.pageCount }}</p>
+                <button onclick="removeFromFavorites({{ item.id }}, '{{ data.favorites.endpoint }}')">Borrar de favoritos</button>
+            </div>
+        {% endif %}
+    {% endfor %}    
+{% endif %}
+
+{{ attach_library('marvel/marvel.script') }}

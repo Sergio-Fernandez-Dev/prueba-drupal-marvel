@@ -26,7 +26,7 @@ class ComicController extends ControllerBase
      */
     public function getAll()
     {
-         $url = 'https://gateway.marvel.com/v1/public/comics?ts=1&apikey=e8960442b278be0f6285586922d9e4e4&hash=a31a5f679419eb7125fa9c0fc3462def';
+        $url = 'https://gateway.marvel.com/v1/public/comics?ts=1&apikey=e8960442b278be0f6285586922d9e4e4&hash=a31a5f679419eb7125fa9c0fc3462def';
         $client = new Client();
 
         try {
@@ -34,7 +34,7 @@ class ComicController extends ControllerBase
             $response = $client->get($url);
             $body = $response->getBody();
             $result = json_decode($body, true);       
-            $favorites = $this->getAllFavorites();
+            $favorites = $this->getFavoritesIds();
             
         } catch (\Exception $e) {
             echo $e->getMessage();
@@ -47,22 +47,50 @@ class ComicController extends ControllerBase
         $data['favorites']['endpoint'] = 'marvel/favorites/comics';
 
         return [
-            '#theme' => 'marvel-item-list',
+            '#theme' => 'marvel-items-list',
             '#data' => $data,
         ];
     }
 
     /**
-     * Returns a JSON response with the list of comics associated with the current user.
+     * Returns the list of comics associated with the current user.
      *
      * 
      */
-    public function getAllFavorites()
+    public function getFavoritesIds()
     {
         $user = $this->entityTypeManager()->getStorage('user')->load($this->currentUser()->id());
         $comicList = $this->entityTypeManager()->getStorage('marvel_comic')->loadByProperties(['users' => [$user->id()]]);
 
         return $comicList;
+    }
+
+    public function getAllFavorites()
+    {
+        $url = 'https://gateway.marvel.com/v1/public/comics?ts=1&apikey=e8960442b278be0f6285586922d9e4e4&hash=a31a5f679419eb7125fa9c0fc3462def';
+        $client = new Client();
+
+        try {
+            
+            $response = $client->get($url);
+            $body = $response->getBody();
+            $result = json_decode($body, true);       
+            $favorites = $this->getFavoritesIds();
+            
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
+
+        $data = [];
+        $data['category'] = 'comics';
+        $data['response'] = $result;
+        $data['favorites'] = $favorites;
+        $data['favorites']['endpoint'] = 'marvel/favorites/comics';
+
+        return [
+            '#theme' => 'marvel-favorites-list',
+            '#data' => $data,
+        ];
     }
 
     /**

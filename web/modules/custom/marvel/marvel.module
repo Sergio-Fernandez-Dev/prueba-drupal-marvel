@@ -6,10 +6,20 @@
 function marvel_theme($existing, $type, $theme, $path)
 {
     return [
-        'marvel-item-list' => [
+        'marvel' => [
             'variables' => [
                 'data' => NULL
             ],
         ],
+        'marvel-favorites-list' => [
+            'variables' => [
+                'data' => NULL
+            ],
+        ],
+        'marvel-items-list' => [
+            'variables' => [
+                'data' => NULL
+            ],
+        ],    
     ];
 }
