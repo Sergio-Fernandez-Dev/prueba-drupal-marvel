@@ -9,10 +9,8 @@
 namespace Drupal\marvel\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Render\Renderer;
 use Drupal\marvel\Entity\Character;
 use GuzzleHttp\Client;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,11 +48,7 @@ class CharacterController extends ControllerBase
         $data['favorites'] = $favorites;
         $data['favorites']['endpoint'] = 'marvel/favorites/characters';
 
-        return [
-            '#theme' => 'marvel-items-list',
-            '#data' => $data,
-  
-        ];
+        return $data;
     }
 
     /**

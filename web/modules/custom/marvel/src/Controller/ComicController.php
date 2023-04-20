@@ -46,10 +46,7 @@ class ComicController extends ControllerBase
         $data['favorites'] = $favorites;
         $data['favorites']['endpoint'] = 'marvel/favorites/comics';
 
-        return [
-            '#theme' => 'marvel-items-list',
-            '#data' => $data,
-        ];
+        return $data;
     }
 
     /**

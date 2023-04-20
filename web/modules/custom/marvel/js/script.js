@@ -1,3 +1,4 @@
+
 async function addToFavorites(id, endpoint) {
 
     const url = `https://prueba-drupal-marvel.ddev.site/${endpoint}`
@@ -38,4 +39,15 @@ async function removeFromFavorites(id, endpoint) {
     location.reload();
     
     return response.ok;
+}
+
+function toggleVisibility(id) {
+    if (id === 'characters') {
+        document.getElementById('character-container').classList.remove('hide-content');
+        document.getElementById('comic-container').classList.add('hide-content');
+    }
+    if (id === 'comics') {
+        document.getElementById('comic-container').classList.remove('hide-content');
+        document.getElementById('character-container').classList.add('hide-content');
+    }
 }

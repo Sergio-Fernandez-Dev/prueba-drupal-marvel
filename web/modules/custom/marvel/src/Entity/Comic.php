@@ -17,11 +17,15 @@ use Drupal\marvel\ComicInterface;
  * 
  * @ContentEntityType(
  *      id = "marvel_comic",
+ *      label = "Comics",
  *      base_table = "marvel_comics",
  *      entity_keys = {
  *          "id" = "comic_id",
  *          "uuid" = "uuid",
- *      }
+ *      },
+ *      handlers = {
+ *          "views_data" = "Drupal\views\EntityViewsData"
+ *      },
  * )
  */
 class Comic extends ContentEntityBase implements ComicInterface 

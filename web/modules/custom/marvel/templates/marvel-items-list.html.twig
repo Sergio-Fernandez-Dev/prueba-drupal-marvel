@@ -1,35 +1,36 @@
 <nav> 
-    <a href="https://prueba-drupal-marvel.ddev.site/marvel/characters">Personajes</a>
-    <a href="https://prueba-drupal-marvel.ddev.site/marvel/comics">Comics</a>
+    <a href="" onclick="toggleVisibility('characters')">Personajes</a>
+    <a href="" onclick="toggleVisibility('comics')">Comics</a>
 </nav>
 
-{% if data.category == 'characters' %}
-    {% for item in data.response.data.results %}
+    <div id="character-container">
+    {% for item in data.characters.response.data.results %}
         <div>
             <img src="{{ item.thumbnail.path }}.{{ item.thumbnail.extension }}">
             <h3>{{ item.name }}</h3>
             <p>Descripción: {{ item.description }}</p>
-            {% if item.id in data.favorites|keys == false %}
-                <button onclick="addToFavorites({{ item.id }}, '{{ data.favorites.endpoint }}')">Añadir a favoritos</button>
+            {% if item.id in data.characters.data.favorites|keys == false %}
+                <button onclick="addToFavorites({{ item.id }}, '{{ data.characters.data.favorites.endpoint }}')">Añadir a favoritos</button>
             {% else %}
-                <button onclick="removeFromFavorites({{ item.id }}, '{{ data.favorites.endpoint }}')">Borrar de favoritos</button>
+                <button onclick="removeFromFavorites({{ item.id }}, '{{ data.characters.data.favorites.endpoint }}')">Borrar de favoritos</button>
             {% endif %}
         </div>
     {% endfor %}
-{% else %}
-    {% for item in data.response.data.results %}
+    </div>
+    <div id="comic-container" class="hide-content">
+    {% for item in data.comics.response.data.results %}
         <div>
             <img src="{{ item.thumbnail.path }}.{{ item.thumbnail.extension }}">
             <h3>{{ item.title }}</h3>
             <p>Descripción: {{ item.description }}</p>
             <p>Número de páginas: {{ item.pageCount }}</p>
-            {% if item.id in data.favorites|keys == false %}
-                <button onclick="addToFavorites({{ item.id }}, '{{ data.favorites.endpoint }}')">Añadir a favoritos</button>
+            {% if item.id in data.comics.favorites|keys == false %}
+                <button onclick="addToFavorites({{ item.id }}, '{{ data.comics.favorites.endpoint }}')">Añadir a favoritos</button>
             {% else %}
-                <button onclick="removeFromFavorites({{ item.id }}, '{{ data.favorites.endpoint }}')">Borrar de favoritos</button>
+                <button onclick="removeFromFavorites({{ item.id }}, '{{ data.comics.favorites.endpoint }}')">Borrar de favoritos</button>
             {% endif %}
         </div>
     {% endfor %}    
-{% endif %}
+    </div>
 
-{{ attach_library('marvel/marvel.script') }}
+{{ attach_library('marvel/marvel') }}

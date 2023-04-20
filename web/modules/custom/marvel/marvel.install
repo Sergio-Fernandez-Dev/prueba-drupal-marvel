@@ -7,6 +7,12 @@ use Drupal\menu_link_content\Entity\MenuLinkContent;
  */
 function marvel_install()
 {
+    _set_permissions();
+    _install_marvel_block();
+}
+
+function _set_permissions()
+{
     $role = \Drupal\user\Entity\Role::load('authenticated');
 
     if ($role) {
@@ -17,5 +23,20 @@ function marvel_install()
             $role->save();
         }
     }
+}
 
+function _install_marvel_block()
+{
+    $block_manager = \Drupal::service('plugin.manager.block');
+
+  // Create an instance of the custom block plugin
+  $plugin_id = 'marvel:marvel_block';
+  $plugin_config = [
+    'title' => 'Marvel Block', 
+    'region' => 'content', 
+    'page' => 'marvel/*'
+];
+  $custom_block = $block_manager->createInstance($plugin_id, $plugin_config)->build();
+
+  return $custom_block;
 }

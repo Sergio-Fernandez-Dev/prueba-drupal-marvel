@@ -1,4 +1,6 @@
-marvel.script:
+marvel:
   js:
     js/script.js: {}
- 
+  css:
+    theme:
+      css/style.css: {}

@@ -6,6 +6,22 @@ marvel.api.config.form:
   requirements:
     _permission: 'access content'
 
+marvel.main:
+  path: '/marvel'
+  methods: 'GET'
+  defaults:
+    _title: 'Items'
+  requirements:
+    _permission: 'access content'
+
+marvel.favorites:
+  path: '/marvel/favorites'
+  methods: 'GET'
+  defaults:
+    _title: 'Favorites'
+  requirements:
+    _permission: 'access content'
+
 marvel.list.comics:
   path: '/marvel/comics'
   methods: 'GET'
@@ -77,3 +93,4 @@ marvel.delete.characters:
     _title: 'Characters'
   requirements:
     _permission: 'delete marvel content'
+  

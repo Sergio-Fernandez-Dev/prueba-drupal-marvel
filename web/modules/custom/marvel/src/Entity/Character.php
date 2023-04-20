@@ -17,13 +17,13 @@ use \Drupal\marvel\CharacterInterface;
  * 
  * @ContentEntityType(
  *      id = "marvel_character",
+ *      label = "Characters",
  *      base_table = "marvel_characters",
  *      entity_keys = {
  *          "id" = "character_id",
  *          "uuid" = "uuid",
  *      },
  *      handlers = {
- *          "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *          "views_data" = "Drupal\views\EntityViewsData"
  *      },
  * )
@@ -40,6 +40,21 @@ class Character extends ContentEntityBase implements CharacterInterface
             ->setDescription(t('The Id of the character'))
             ->setRequired(true)
             ->addConstraint('UniqueField', []);
+            
+        $fields['name'] = BaseFieldDefinition::create('string')
+            ->setLabel(t('Character name'))
+            ->setDescription(t('The name of the character'))
+            ->setRequired(false);
+
+        $fields['description'] = BaseFieldDefinition::create('string_long')
+            ->setLabel(t('Character description'))
+            ->setDescription(t('The description of the character'))
+            ->setRequired(false);
+        
+        $fields['image'] = BaseFieldDefinition::create('uri')
+        ->setLabel(t('Character image uri'))
+        ->setDescription(t('The uri of the characters image'))
+        ->setRequired(false);
 
         $fields['users'] = BaseFieldDefinition::create('entity_reference')
             ->setLabel(t('Users'))
