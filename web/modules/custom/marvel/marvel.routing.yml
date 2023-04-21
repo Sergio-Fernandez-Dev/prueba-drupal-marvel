@@ -10,6 +10,7 @@ marvel.main:
   path: '/marvel'
   methods: 'GET'
   defaults:
+    _controller: '\Drupal\marvel\Controller\PageController::showMainPage' 
     _title: 'Items'
   requirements:
     _permission: 'access content'
@@ -18,6 +19,7 @@ marvel.favorites:
   path: '/marvel/favorites'
   methods: 'GET'
   defaults:
+    _controller: '\Drupal\marvel\Controller\PageController::showFavoritesPage' 
     _title: 'Favorites'
   requirements:
     _permission: 'access content'
