@@ -25,6 +25,10 @@ class MarvelBlock extends BlockBase implements ContainerFactoryPluginInterface
      */
     protected $classResolver;
 
+    private $characterController;
+    private $comicController;
+
+
     /**
      * Constructs a new MarvelBlock object.
      *
@@ -34,17 +38,19 @@ class MarvelBlock extends BlockBase implements ContainerFactoryPluginInterface
      *   The plugin_id for the plugin instance.
      * @param string $plugin_definition
      *   The plugin implementation definition.
-     * @param \Drupal\Core\DependencyInjection\ClassResolverInterface $class_resolver
+     * @param \Drupal\Core\DependencyInjection\ClassResolverInterface $classResolver
      *   The class resolver service.
      */
     public function __construct(
         array $configuration,
         $plugin_id,
         $plugin_definition,
-        ClassResolverInterface $class_resolver
+        ClassResolverInterface $classResolver
     ) {
         parent::__construct($configuration, $plugin_id, $plugin_definition);
-        $this->classResolver = $class_resolver;
+        $this->classResolver = $classResolver;
+        $this->characterController = $this->getControllerInstance($this->classResolver,  $configuration['controllers']['character']);
+        $this->comicController = $this->getControllerInstance($this->classResolver,  $configuration['controllers']['comic']);
     }
 
     /**
@@ -66,15 +72,18 @@ class MarvelBlock extends BlockBase implements ContainerFactoryPluginInterface
     public function build()
     {
         $data = [];
-        $characterController = $this->classResolver->getInstanceFromDefinition('\Drupal\marvel\Controller\CharacterController');
-        $comicController = $this->classResolver->getInstanceFromDefinition('\Drupal\marvel\Controller\ComicController');
-        $data['characters'] = $characterController->getAll();
-        $data['comics'] = $comicController->getAll();
+        $data['characters'] = $this->characterController->getAll();
+        $data['comics'] = $this->comicController->getAll();
 
         return [
             '#theme' => 'marvel-items-list',
             '#data' => $data,
         ];
+    }
+
+    private function getControllerInstance(ClassResolverInterface $classResolver, $controllerPath)
+    {
+        return $classResolver->getInstanceFromDefinition($controllerPath);
     }
 
 }
