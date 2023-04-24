@@ -1,6 +1,6 @@
 <nav> 
-    <a href="" onclick="toggleVisibility('characters')">Personajes</a>
-    <a href="" onclick="toggleVisibility('comics')">Comics</a>
+    <a href="#" onclick="toggleVisibility('characters')">Personajes</a>
+    <a href="#" onclick="toggleVisibility('comics')">Comics</a>
 </nav>
 
     <div id="character-container">
@@ -9,10 +9,10 @@
             <img src="{{ item.thumbnail.path }}.{{ item.thumbnail.extension }}">
             <h3>{{ item.name }}</h3>
             <p>Descripción: {{ item.description }}</p>
-            {% if item.id in data.characters.data.favorites|keys == false %}
-                <button onclick="addToFavorites({{ item.id }}, '{{ data.characters.data.favorites.endpoint }}')">Añadir a favoritos</button>
+            {% if item.id in data.characters.favorites|keys == false %}
+                <button onclick="addToFavorites({{ item.id }}, '{{ data.characters.favorites.endpoint }}')">Añadir a favoritos</button>
             {% else %}
-                <button onclick="removeFromFavorites({{ item.id }}, '{{ data.characters.data.favorites.endpoint }}')">Borrar de favoritos</button>
+                <button onclick="removeFromFavorites({{ item.id }}, '{{ data.characters.favorites.endpoint }}')">Borrar de favoritos</button>
             {% endif %}
         </div>
     {% endfor %}
