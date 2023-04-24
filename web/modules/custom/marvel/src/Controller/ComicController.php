@@ -41,53 +41,27 @@ class ComicController extends ControllerBase
         }
 
         $data = [];
-        $data['category'] = 'comics';
         $data['response'] = $result;
         $data['favorites'] = $favorites;
         $data['favorites']['endpoint'] = 'marvel/favorites/comics';
 
         return $data;
     }
-
-    /**
-     * Returns the list of comics associated with the current user.
-     *
-     * 
-     */
-    public function getFavoritesIds()
-    {
-        $user = $this->entityTypeManager()->getStorage('user')->load($this->currentUser()->id());
-        $comicList = $this->entityTypeManager()->getStorage('marvel_comic')->loadByProperties(['users' => [$user->id()]]);
-
-        return $comicList;
-    }
+    
 
     public function getAllFavorites()
     {
-        $url = 'https://gateway.marvel.com/v1/public/comics?ts=1&apikey=e8960442b278be0f6285586922d9e4e4&hash=a31a5f679419eb7125fa9c0fc3462def';
-        $client = new Client();
+        $data = $this->getAll();
+        $itemList = $data['response']['data']['results'];
+        $favorites = $this->getFavoritesIds();
 
-        try {
-            
-            $response = $client->get($url);
-            $body = $response->getBody();
-            $result = json_decode($body, true);       
-            $favorites = $this->getFavoritesIds();
-            
-        } catch (\Exception $e) {
-            echo $e->getMessage();
+        foreach ($itemList as $key => $item) {
+            if (!in_array($item['id'], $favorites)) {
+                unset($itemList[$key]);
+            }
         }
 
-        $data = [];
-        $data['category'] = 'comics';
-        $data['response'] = $result;
-        $data['favorites'] = $favorites;
-        $data['favorites']['endpoint'] = 'marvel/favorites/comics';
-
-        return [
-            '#theme' => 'marvel-favorites-list',
-            '#data' => $data,
-        ];
+        return $itemList;      
     }
 
     /**
@@ -146,10 +120,21 @@ class ComicController extends ControllerBase
             $comic->save();
         }
 
-        if (empty($comic->get('users'))) {
+        if (count($comic->get('users')) == 0) {
             $comic->delete();
         }
 
         return new JsonResponse(Response::HTTP_OK);
+    }
+
+    /**
+     * Returns the list of comic's Ids associated with the current user.
+     */
+    private function getFavoritesIds()
+    {
+        $user = $this->entityTypeManager()->getStorage('user')->load($this->currentUser()->id());
+        $comicList = $this->entityTypeManager()->getStorage('marvel_comic')->loadByProperties(['users' => [$user->id()]]);
+
+        return $comicList;
     }
 }
