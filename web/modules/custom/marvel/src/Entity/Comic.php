@@ -20,7 +20,7 @@ use Drupal\marvel\ComicInterface;
  *      label = "Comics",
  *      base_table = "marvel_comics",
  *      entity_keys = {
- *          "id" = "comic_id",
+ *          "id" = "id",
  *          "uuid" = "uuid",
  *      },
  *      handlers = {
@@ -35,7 +35,7 @@ class Comic extends ContentEntityBase implements ComicInterface
     {
         $fields = parent::baseFieldDefinitions($entity_type); 
 
-        $fields['comic_id'] = BaseFieldDefinition::create('integer')
+        $fields['id'] = BaseFieldDefinition::create('integer')
         ->setLabel(t('Comic Id'))
         ->setDescription(t('The Id of the comic'))
         ->setRequired(true)

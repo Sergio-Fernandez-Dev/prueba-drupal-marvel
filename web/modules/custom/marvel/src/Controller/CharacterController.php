@@ -36,12 +36,12 @@ class CharacterController extends ControllerBase
             $response = $client->get($url);
             $body = $response->getBody();
             $result = json_decode($body, true);       
-            $favorites = $this->getFavoritesIds();
             
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
-
+        
+        $favorites = $this->getFavoritesIds();
         $data = [];
         $data['response'] = $result;
         $data['favorites'] = $favorites;
@@ -82,7 +82,7 @@ class CharacterController extends ControllerBase
 
         if (!$character) {
             $character = Character::create([
-                'character_id' => $data['id'],
+                'id' => $data['id'],
                 'users' => $user,
             ]);
         }
@@ -135,7 +135,12 @@ class CharacterController extends ControllerBase
     {
         $user = $this->entityTypeManager()->getStorage('user')->load($this->currentUser()->id());
         $characterList = $this->entityTypeManager()->getStorage('marvel_character')->loadByProperties(['users' => [$user->id()]]);
+        $result = [];
 
-        return $characterList;
+        foreach ($characterList as $character) {
+            $result[] = $character->get('id');
+        }
+
+        return $result;
     }
 }

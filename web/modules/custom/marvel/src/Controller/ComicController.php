@@ -34,12 +34,12 @@ class ComicController extends ControllerBase
             $response = $client->get($url);
             $body = $response->getBody();
             $result = json_decode($body, true);       
-            $favorites = $this->getFavoritesIds();
             
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
-
+        
+        $favorites = $this->getFavoritesIds();
         $data = [];
         $data['response'] = $result;
         $data['favorites'] = $favorites;
@@ -81,7 +81,7 @@ class ComicController extends ControllerBase
 
         if (!$comic) {
             $comic = Comic::create([
-                'comic_id' => $data['id'],
+                'id' => $data['id'],
                 'users' => $user,
             ]);
         }
@@ -134,7 +134,12 @@ class ComicController extends ControllerBase
     {
         $user = $this->entityTypeManager()->getStorage('user')->load($this->currentUser()->id());
         $comicList = $this->entityTypeManager()->getStorage('marvel_comic')->loadByProperties(['users' => [$user->id()]]);
+        $result = [];
 
-        return $comicList;
+        foreach ($comicList as $comic) {
+            $result[] = $comic->get('id');
+        }
+
+        return $result;
     }
 }

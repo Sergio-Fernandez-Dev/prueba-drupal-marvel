@@ -20,7 +20,7 @@ use \Drupal\marvel\CharacterInterface;
  *      label = "Characters",
  *      base_table = "marvel_characters",
  *      entity_keys = {
- *          "id" = "character_id",
+ *          "id" = "id",
  *          "uuid" = "uuid",
  *      },
  *      handlers = {
@@ -35,7 +35,7 @@ class Character extends ContentEntityBase implements CharacterInterface
     {
         $fields = parent::baseFieldDefinitions($entity_type); 
 
-        $fields['character_id'] = BaseFieldDefinition::create('integer')
+        $fields['id'] = BaseFieldDefinition::create('integer')
             ->setLabel(t('Character Id'))
             ->setDescription(t('The Id of the character'))
             ->setRequired(true)
