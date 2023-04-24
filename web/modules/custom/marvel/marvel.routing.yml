@@ -1,7 +1,7 @@
 marvel.api.config.form:
   path: 'admin/api/config'
   defaults:
-    _form:  'Drupal\marvel\Form\APIConfigForm'
+    _form:  'Drupal\marvel\Form\ApiConfigForm'
     _title: 'API Configuration'
   requirements:
     _permission: 'access content'
