@@ -49,8 +49,8 @@ class MarvelBlock extends BlockBase implements ContainerFactoryPluginInterface
     ) {
         parent::__construct($configuration, $plugin_id, $plugin_definition);
         $this->classResolver = $classResolver;
-        $this->characterController = $this->getControllerInstance($this->classResolver,  $configuration['controllers']['character']);
-        $this->comicController = $this->getControllerInstance($this->classResolver,  $configuration['controllers']['comic']);
+        $this->characterController = $this->getControllerInstance($this->classResolver,  $configuration['controllers']['character']['path']);
+        $this->comicController = $this->getControllerInstance($this->classResolver,  $configuration['controllers']['comic']['path']);
     }
 
     /**
@@ -72,8 +72,8 @@ class MarvelBlock extends BlockBase implements ContainerFactoryPluginInterface
     public function build()
     {
         $data = [];
-        $data['characters'] = $this->characterController->getAll();
-        $data['comics'] = $this->comicController->getAll();
+        $data['characters'] = $this->characterController->{$this->configuration['controllers']['character']['method']}();
+        $data['comics'] = $this->comicController->{$this->configuration['controllers']['comic']['method']}();
 
         return [
             '#theme' => 'marvel-items-list',

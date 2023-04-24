@@ -37,20 +37,45 @@ class PageController extends ControllerBase
     {
         $config = [
             'controllers' => [
-                'character' => '\Drupal\marvel\Controller\CharacterController',
-                'comic' => '\Drupal\marvel\Controller\ComicController'
+                'character' => [
+                    'path' => '\Drupal\marvel\Controller\CharacterController',
+                    'method' => 'getAll',
+                ],
+                'comic' => [
+                    'path' =>'\Drupal\marvel\Controller\ComicController',
+                    'method' => 'getAll',
+                ],
             ],
         ];
+        
+        return $this->renderBlock($config);
+    }
+
+    public function showFavoritesPage()
+    {
+        $config = [
+            'controllers' => [
+                'character' => [
+                    'path' => '\Drupal\marvel\Controller\CharacterController',
+                    'method' => 'getAllFavorites',
+                ],
+                'comic' => [
+                    'path' =>'\Drupal\marvel\Controller\ComicController',
+                    'method' => 'getAllfavorites',
+                ],
+            ],
+        ];
+        
+        return $this->renderBlock($config);
+    }
+
+    private function renderBlock(array $config) 
+    {
         $pluginBlock = $this->blockManager->createInstance('marvel_block', $config);
 
         $render = $pluginBlock->build();      
         $this->renderer->addCacheableDependency($render, $pluginBlock);
 
         return $render;
-    }
-
-    public function showFavoritesPage()
-    {
-
     }
 }
