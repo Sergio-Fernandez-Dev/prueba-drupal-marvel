@@ -41,7 +41,7 @@ class CharacterController extends ControllerBase
             echo $e->getMessage();
         }
         
-        $favorites = $this->getFavoritesIds();
+        $favorites = $this->getFavoritesAsEntities();
         $data = [];
         $data['response'] = $result;
         $data['favorites'] = $favorites;
@@ -53,16 +53,20 @@ class CharacterController extends ControllerBase
     public function getAllFavorites()
     {
         $data = $this->getAll();
-        $itemList = $data['response']['data']['results'];
-        $favorites = $this->getFavoritesIds();
+        $favorites = $this->getFavoritesAsEntities();
+        $characterIds = [];
+    
+        foreach ($favorites as $character) {
+            $characterIds[] = $character->id();
+        }
 
-        foreach ($itemList as $key => $item) {
-            if (!in_array($item['id'], $favorites)) {
-                unset($itemList[$key]);
+        foreach ($data['response']['data']['results'] as $key => $item) {
+            if (!in_array($item['id'], $characterIds)) {
+                unset($data['response']['data']['results'][$key]);
             }
         }
 
-        return $itemList;      
+        return $data;    
     }
 
     /**
@@ -131,16 +135,11 @@ class CharacterController extends ControllerBase
     /**
      * Returns the list of characters associated with the current user.
      */
-    public function getFavoritesIds()
+    public function getFavoritesAsEntities()
     {
         $user = $this->entityTypeManager()->getStorage('user')->load($this->currentUser()->id());
         $characterList = $this->entityTypeManager()->getStorage('marvel_character')->loadByProperties(['users' => [$user->id()]]);
-        $result = [];
-
-        foreach ($characterList as $character) {
-            $result[] = $character->get('id');
-        }
-
-        return $result;
+       
+        return $characterList;
     }
 }

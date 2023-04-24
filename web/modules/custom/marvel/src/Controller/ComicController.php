@@ -39,7 +39,7 @@ class ComicController extends ControllerBase
             echo $e->getMessage();
         }
         
-        $favorites = $this->getFavoritesIds();
+        $favorites = $this->getFavoritesAsEntities();
         $data = [];
         $data['response'] = $result;
         $data['favorites'] = $favorites;
@@ -52,16 +52,20 @@ class ComicController extends ControllerBase
     public function getAllFavorites()
     {
         $data = $this->getAll();
-        $itemList = $data['response']['data']['results'];
-        $favorites = $this->getFavoritesIds();
+        $favorites = $this->getFavoritesAsEntities();
 
-        foreach ($itemList as $key => $item) {
-            if (!in_array($item['id'], $favorites)) {
-                unset($itemList[$key]);
+        $comicIds = [];
+    
+        foreach ($favorites as $comic) {
+            $comicIds[] = $comic->id();
+        }
+        foreach ($data['response']['data']['results'] as $key => $item) {
+            if (!in_array($item['id'], $comicIds)) {
+                unset($data['response']['data']['results'][$key]);
             }
         }
 
-        return $itemList;      
+        return $data;      
     }
 
     /**
@@ -130,16 +134,11 @@ class ComicController extends ControllerBase
     /**
      * Returns the list of comic's Ids associated with the current user.
      */
-    private function getFavoritesIds()
+    private function getFavoritesAsEntities()
     {
         $user = $this->entityTypeManager()->getStorage('user')->load($this->currentUser()->id());
         $comicList = $this->entityTypeManager()->getStorage('marvel_comic')->loadByProperties(['users' => [$user->id()]]);
-        $result = [];
-
-        foreach ($comicList as $comic) {
-            $result[] = $comic->get('id');
-        }
-
-        return $result;
+       
+        return $comicList;
     }
 }
