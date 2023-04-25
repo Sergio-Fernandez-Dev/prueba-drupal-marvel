@@ -12,9 +12,9 @@ marvel.favorites_link:
   route_name: marvel.favorites
   weight: 10
 
-marvel.api_form_link:
-  title: 'API Keys'
-  parent: system.admin_content
-  description: 'Form to manage Marvel's API keys'
-  route_name: marvel.api.config.form
+marvel.endpoints_link:
+  title: 'Endpoints'
+  parent: system.admin
+  description: 'List of favorite Marvel items'
+  route_name: marvel.config
   weight: 99

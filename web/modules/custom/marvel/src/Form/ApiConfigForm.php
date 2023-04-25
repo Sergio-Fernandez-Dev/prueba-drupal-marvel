@@ -8,18 +8,54 @@
 namespace Drupal\marvel\Form;
 
 use Drupal\Core\Form\FormBase;
-use \Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\marvel\Entity\ApiKey;
 
+
+/**
+ * Class ApiConfigForm.
+ *
+ * @package Drupal\marvel\Form
+ */
 class ApiConfigForm extends FormBase
 {
-    /** 
-     * {@inheritDoc}
+    /**
+     * The messenger service.
+     *
+     * @var \Drupal\Core\Messenger\MessengerInterface
+     */
+    protected $messenger;
+
+    /**
+     * ApiConfigForm constructor.
+     *
+     * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+     *   The messenger service.
+     */
+    public function __construct(MessengerInterface $messenger)
+    {
+        $this->messenger = $messenger;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function create(\Symfony\Component\DependencyInjection\ContainerInterface $container)
+    {
+        return new static(
+            $container->get('messenger')
+        );
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getFormId()
     {
         return 'api_config_form';
     }
+
 
     /** 
      * {@inheritDoc}
@@ -29,6 +65,12 @@ class ApiConfigForm extends FormBase
         $form['api_version'] = [
             '#type' => 'textfield',
             '#title' => t('API Version: '),
+            '#required' => TRUE,
+        ];
+
+        $form['endpoint'] = [
+            '#type' => 'textfield',
+            '#title' => t('Endpoint: '),
             '#required' => TRUE,
         ];
 
@@ -57,22 +99,28 @@ class ApiConfigForm extends FormBase
      */
     public function submitForm(array &$form, FormStateInterface $form_state)
     {
+        $apiVersion = $form_state->getValue('api_version');
+        $endpoint = $form_state->getValue('endpoint');
         $publicKey = $form_state->getValue('public_key');
         $privateKey = $form_state->getValue('private_key');
         $timestamp = \time();
+
         $hash = \md5($timestamp . $privateKey . $publicKey);
 
+        $url = "https://gateway.marvel.com/{$apiVersion}/{$endpoint}?ts={$timestamp}&apikey={$publicKey}&hash={$hash}";
+
         $fields = [
-            'api_version' => $form_state->getValue('api_version'),
-            'endpoint' => $form_state->getValue('endpoint'),
-            'public_key' => $publicKey,
-            'private_key' => $privateKey,
-            'timestamp' => $timestamp,
-            'hash' => $hash,
+            'api_version' => $apiVersion,
+            'endpoint' => $endpoint,
+            'url' => $url,
         ];
 
         $apiKey = ApiKey::create($fields);
 
-        $apiKey->save();
+        if ($apiKey->save()) {
+            $this->messenger->addMessage(t('New URL created: ' . $url));
+        } else {
+            $this->messenger->addError(t('Error: The URL cannot be created.'));
+        }
     }
 }

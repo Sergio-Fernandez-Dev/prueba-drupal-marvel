@@ -20,15 +20,18 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CharacterController extends ControllerBase
 {
+    const API_VERSION = 'v1';
+    const ENDPOINT = 'public/characters';
+
     /*
-     * Displays Marvel View.
+     * Displays a list of Marvel characters.
      *
      * @return array
-     *   The render array for the view output.
+     *   The data that should be passed to the template.
      */
     public function getAll()
     {
-        $url = 'https://gateway.marvel.com/v1/public/characters?ts=1&apikey=e8960442b278be0f6285586922d9e4e4&hash=a31a5f679419eb7125fa9c0fc3462def';
+        $url = $this->getUrl();
         $client = new Client();
 
         try {
@@ -135,11 +138,27 @@ class CharacterController extends ControllerBase
     /**
      * Returns the list of characters associated with the current user.
      */
-    public function getFavoritesAsEntities()
+    private function getFavoritesAsEntities()
     {
         $user = $this->entityTypeManager()->getStorage('user')->load($this->currentUser()->id());
         $characterList = $this->entityTypeManager()->getStorage('marvel_character')->loadByProperties(['users' => [$user->id()]]);
        
         return $characterList;
+    }
+
+    private function getUrl() 
+    {
+        $key = $this->entityTypeManager()
+            ->getStorage('marvel_api_key')
+            ->loadByProperties([
+                'api_version' => self::API_VERSION,
+                'endpoint' => self::ENDPOINT,
+            ]);
+        // get the first element    
+        $firstElement = reset($key);
+        
+        $url = $firstElement->get('url')->getString();
+        
+        return $url;
     }
 }

@@ -1,7 +1,7 @@
 
 async function addToFavorites(id, endpoint) {
 
-    const url = `https://prueba-drupal-marvel.ddev.site/${endpoint}`
+    const url = `/${endpoint}`;
     const data = {id: id}; 
     const response = await fetch(url, {
         method: "POST",
@@ -25,7 +25,7 @@ async function addToFavorites(id, endpoint) {
 }
 
 async function removeFromFavorites(id, endpoint) {
-    const url = `https://prueba-drupal-marvel.ddev.site/${endpoint}/${id}`;
+    const url = `/${endpoint}/${id}`;
     const response = await fetch(url, {
         method: "DELETE",
     });

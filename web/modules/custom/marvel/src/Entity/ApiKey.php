@@ -47,34 +47,19 @@ class ApiKey extends ContentEntityBase implements ApiKeyInterface
             ->setDefaultValue('')
             ->setSetting('max_length', 10);
 
-        $fields['public_key'] = BaseFieldDefinition::create('string')
+        $fields['endpoint'] = BaseFieldDefinition::create('string')
             ->setLabel(t('Public key'))
-            ->setDescription(t('The public key used by the API key.'))
+            ->setDescription(t('The endpoint used to access to the API'))
             ->setRequired(true)
             ->setDefaultValue('')
             ->setSetting('max_length', 255);
 
-        // Private key field.
-        $fields['private_key'] = BaseFieldDefinition::create('string')
-            ->setLabel(t('Private key'))
-            ->setDescription(t('The private key used by the API key.'))
+        $fields['url'] = BaseFieldDefinition::create('string')
+            ->setLabel(t('URL'))
+            ->setDescription(t('The complete url used to access to the API'))
             ->setRequired(true)
             ->setDefaultValue('')
             ->setSetting('max_length', 255);
-
-        // Timestamp field.
-        $fields['timestamp'] = BaseFieldDefinition::create('integer')
-            ->setLabel(t('Timestamp'))
-            ->setDescription(t('The timestamp of the API key creation.'))
-            ->setRequired(true);
-
-        // Hash field.
-        $fields['hash'] = BaseFieldDefinition::create('string')
-            ->setLabel(t('Hash'))
-            ->setDescription(t('The hash value of the API key.'))
-            ->setRequired(true)
-            ->setDefaultValue('')
-            ->setSetting('max_length', 32);
 
         return $fields;
     }

@@ -18,6 +18,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ComicController extends ControllerBase
 {
+    const API_VERSION = 'v1';
+    const ENDPOINT = 'public/comics';
     /*
      * Displays Marvel View.
      *
@@ -26,7 +28,7 @@ class ComicController extends ControllerBase
      */
     public function getAll()
     {
-        $url = 'https://gateway.marvel.com/v1/public/comics?ts=1&apikey=e8960442b278be0f6285586922d9e4e4&hash=a31a5f679419eb7125fa9c0fc3462def';
+        $url = $this->getUrl();
         $client = new Client();
 
         try {
@@ -138,7 +140,23 @@ class ComicController extends ControllerBase
     {
         $user = $this->entityTypeManager()->getStorage('user')->load($this->currentUser()->id());
         $comicList = $this->entityTypeManager()->getStorage('marvel_comic')->loadByProperties(['users' => [$user->id()]]);
-       
+
         return $comicList;
+    }
+
+    private function getUrl() 
+    {
+        $key = $this->entityTypeManager()
+            ->getStorage('marvel_api_key')
+            ->loadByProperties([
+                'api_version' => self::API_VERSION,
+                'endpoint' => self::ENDPOINT,
+            ]);
+        // get the first element    
+        $firstElement = reset($key);
+        
+        $url = $firstElement->get('url')->getString();
+        
+        return $url;
     }
 }

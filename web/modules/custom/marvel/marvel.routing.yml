@@ -1,5 +1,5 @@
-marvel.api.config.form:
-  path: 'admin/api/config'
+marvel.config:
+  path: 'admin/endpoints'
   defaults:
     _form:  'Drupal\marvel\Form\ApiConfigForm'
     _title: 'API Configuration'
